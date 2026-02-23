@@ -1,0 +1,8 @@
+// .vscode/settings.json
+{
+  "terminal.integrated.cwd": "${workspaceFolder}/backend",
+  "terminal.integrated.enablePersistentSessions": true,
+  "terminal.integrated.persistentSessionReviveProcess": "onExitAndWindowClose",
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/Scripts/python.exe",
+  "python.terminal.activateEnvironment": true
+}

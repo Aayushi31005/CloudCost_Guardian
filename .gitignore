@@ -1,0 +1,10 @@
+.vscode/settings.json
+.vscode/RUN_COMMANDS.md
+
+venv/
+**__pycache__/
+*.pyc
+cloudcost.db
+.env
+*.db
+/backend/.git_backend_backup/
