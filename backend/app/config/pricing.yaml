@@ -1,0 +1,10 @@
+version: "v1"
+
+pricing:
+  ec2:
+    price_per_unit: 0.05
+    free_tier: 750
+
+  s3:
+    price_per_unit: 0.023
+    free_tier: 5
