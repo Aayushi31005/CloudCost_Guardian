@@ -1,22 +1,41 @@
 import logging
 from datetime import datetime
+from typing import List
 from app.models.cost import CostEstimate
 from app.models.aggregation import AggregatedCost
 
 logger = logging.getLogger(__name__)
 
 class CostAggregationEngine:
-    def aggregate_monthly_service(self, estimate: CostEstimate):
+    def aggregate(self, estimate: CostEstimate) -> List[AggregatedCost]:
         now = datetime.utcnow()
-        period = now.strftime("%Y-%m")
+        daily_period = now.strftime("%Y-%m-%d")
+        monthly_period = now.strftime("%Y-%m")
 
-        aggregated = AggregatedCost(
-            service=estimate.service,
-            window="monthly_service",
-            period_start=period,
-            total_cost=estimate.estimated_cost,
+        aggregations = [
+            AggregatedCost(
+                service=estimate.service,
+                window="daily_service",
+                period_start=daily_period,
+                total_cost=estimate.estimated_cost,
+            ),
+            AggregatedCost(
+                service=estimate.service,
+                window="monthly_service",
+                period_start=monthly_period,
+                total_cost=estimate.estimated_cost,
+            ),
+            AggregatedCost(
+                service=None,
+                window="monthly_global",
+                period_start=monthly_period,
+                total_cost=estimate.estimated_cost,
+            ),
+        ]
+
+        logger.info(
+            "aggregation_created",
+            extra={"count": len(aggregations)},
         )
 
-        logger.info("aggregation_created", extra=aggregated.model_dump())
-
-        return aggregated
+        return aggregations

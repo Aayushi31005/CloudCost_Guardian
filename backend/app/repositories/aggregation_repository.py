@@ -19,10 +19,11 @@ class AggregationRepository:
             if existing:
                 existing.total_cost += aggregation.total_cost
                 db.commit()
-                logger.info("aggregation_updated", extra={"id": existing.id})
+                logger.info("aggregation_updated")
             else:
+                service_key = aggregation.service or "all"
                 new_record = AggregatedCostDB(
-                    id=f"{aggregation.service}_{aggregation.period_start}",
+                    id=f"{aggregation.window}_{service_key}_{aggregation.period_start}",
                     service=aggregation.service,
                     window=aggregation.window,
                     period_start=aggregation.period_start,
@@ -31,7 +32,7 @@ class AggregationRepository:
 
                 db.add(new_record)
                 db.commit()
-                logger.info("aggregation_created", extra={"id": new_record.id})
+                logger.info("aggregation_created")
 
         finally:
             db.close()
