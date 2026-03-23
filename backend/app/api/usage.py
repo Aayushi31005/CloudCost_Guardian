@@ -5,15 +5,16 @@ from app.engines.cost_engine import CostEstimationEngine
 from app.repositories.cost_repository import CostRepository
 from app.engines.aggregation_engine import CostAggregationEngine
 from app.repositories.aggregation_repository import AggregationRepository
-
+from app.engines.policy_engine import PolicyEngine
+from app.engines.alert_engine import AlertEngine
 router = APIRouter(prefix="/usage", tags=["usage"])
-
+alert_engine =AlertEngine()
 repo = UsageRepository()
 cost_engine = CostEstimationEngine("app/config/pricing.yaml")
 cost_repo = CostRepository()
 aggregation_engine = CostAggregationEngine()
 aggregation_repo = AggregationRepository()
-
+policy_engine = PolicyEngine("app/config/policies.yaml")
 
 @router.post("/", response_model=UsageResponse)
 def create_usage(usage: UsageCreate):
@@ -31,5 +32,10 @@ def create_usage(usage: UsageCreate):
 
     for aggregation in aggregations:
         aggregation_repo.upsert(aggregation)
+
+        violations = policy_engine.evaluate(aggregation)
+
+        for violation in violations:
+            alert_engine.emit(violation)
 
     return usage

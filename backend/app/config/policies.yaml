@@ -1,0 +1,17 @@
+daily_ec2_limit:
+  window: daily_service
+  service: ec2
+  max_cost: 50
+  severity: warning
+
+monthly_ec2_limit:
+  window: monthly_service
+  service: ec2
+  max_cost: 200
+  severity: warning
+
+monthly_global_limit:
+  window: monthly_global
+  service: null
+  max_cost: 500
+  severity: critical
