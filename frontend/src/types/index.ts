@@ -12,3 +12,8 @@ export interface Alert {
   severity: string
   message: string
 }
+
+export interface DailyCost {
+  date: string
+  cost: number
+}

@@ -28,7 +28,7 @@ def create_usage(usage: UsageCreate):
 
     estimate = cost_engine.estimate(usage)
     cost_repo.save(estimate)
-    aggregations = aggregation_engine.aggregate(estimate)
+    aggregations = aggregation_engine.aggregate(estimate, usage.timestamp)
 
     for aggregation in aggregations:
         aggregation_repo.upsert(aggregation)

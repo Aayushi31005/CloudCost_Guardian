@@ -20,10 +20,7 @@ class AlertEngine:
         alert = Alert(
             key=key,
             severity=violation.severity,
-            alert_message=(
-                f"{violation.policy_name} exceeded: "
-                f"{violation.current_cost} > {violation.threshold}"
-            ),
+            message=f"{violation.policy_name.replace('_', ' ').title()} exceeded ({violation.current_cost} > {violation.threshold})",
         )
 
         self.sent_alerts.add(key)

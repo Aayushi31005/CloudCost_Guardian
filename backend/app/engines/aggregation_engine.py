@@ -7,10 +7,9 @@ from app.models.aggregation import AggregatedCost
 logger = logging.getLogger(__name__)
 
 class CostAggregationEngine:
-    def aggregate(self, estimate: CostEstimate) -> List[AggregatedCost]:
-        now = datetime.utcnow()
-        daily_period = now.strftime("%Y-%m-%d")
-        monthly_period = now.strftime("%Y-%m")
+    def aggregate(self, estimate: CostEstimate, usage_timestamp: datetime) -> List[AggregatedCost]:
+        daily_period = usage_timestamp.strftime("%Y-%m-%d")
+        monthly_period = usage_timestamp.strftime("%Y-%m")
 
         aggregations = [
             AggregatedCost(
