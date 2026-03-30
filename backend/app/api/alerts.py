@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.repositories.alert_repository import AlertRepository
-from app.api.usage import alert_engine
+from app.services.usage_service import alert_engine
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
 

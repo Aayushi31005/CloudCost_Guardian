@@ -12,7 +12,7 @@ class PolicyEngine:
         with open(policy_path) as f:
             self.policies = yaml.safe_load(f)
         
-    def evaluate(self, aggregation: AggregatedCost) -> List[PolicyViolation]:
+    def evaluate(self, aggregation: AggregatedCost, latest_increment: float) -> List[PolicyViolation]:
         violations = []
 
         for name, policy in self.policies.items():
@@ -22,18 +22,62 @@ class PolicyEngine:
             if policy.get("service") != aggregation.service:
                 continue
 
-            if aggregation.total_cost > policy["max_cost"]:
+            max_cost = policy["max_cost"]
+            warning_ratio = policy.get("warning_ratio", 0.75)
+            warning_threshold = max_cost * warning_ratio
+            projected_cost = aggregation.total_cost + max(0, latest_increment)
+
+            if aggregation.total_cost >= max_cost:
                 violation = PolicyViolation(
                     policy_name=name,
                     window=aggregation.window,
+                    period_start=aggregation.period_start,
                     service=aggregation.service,
                     severity=policy["severity"],
+                    stage="exceeded",
                     current_cost=aggregation.total_cost,
-                    threshold=policy["max_cost"],
+                    threshold=max_cost,
+                    projected_cost=projected_cost,
                 )
                 violations.append(violation)
                 logger.warning(
                     "policy_violation_detected",
+                    extra=violation.model_dump()
+                )
+
+            elif projected_cost >= max_cost:
+                violation = PolicyViolation(
+                    policy_name=name,
+                    window=aggregation.window,
+                    period_start=aggregation.period_start,
+                    service=aggregation.service,
+                    severity="warning",
+                    stage="projected",
+                    current_cost=aggregation.total_cost,
+                    threshold=max_cost,
+                    projected_cost=projected_cost,
+                )
+                violations.append(violation)
+                logger.warning(
+                    "policy_projection_warning_detected",
+                    extra=violation.model_dump()
+                )
+
+            elif aggregation.total_cost >= warning_threshold:
+                violation = PolicyViolation(
+                    policy_name=name,
+                    window=aggregation.window,
+                    period_start=aggregation.period_start,
+                    service=aggregation.service,
+                    severity="warning",
+                    stage="approaching",
+                    current_cost=aggregation.total_cost,
+                    threshold=max_cost,
+                    projected_cost=projected_cost,
+                )
+                violations.append(violation)
+                logger.warning(
+                    "policy_warning_detected",
                     extra=violation.model_dump()
                 )
         return violations

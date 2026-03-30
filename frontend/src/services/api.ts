@@ -24,3 +24,28 @@ export async function getDailyCosts() {
   })
   return res.json()
 }
+
+export async function createUsage(data: any) {
+  const res = await fetch(`${API_BASE}/usage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export async function startSimulator() {
+  await fetch(`${API_BASE}/simulator/start`, { method: "POST" })
+}
+
+export async function stopSimulator() {
+  await fetch(`${API_BASE}/simulator/stop`, { method: "POST" })
+}
+
+export async function getSimulatorStatus() {
+  const res = await fetch(`${API_BASE}/simulator/status`)
+  return res.json()
+}

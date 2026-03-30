@@ -7,6 +7,8 @@ import SummaryCard from "../components/dashboard/SummaryCard"
 import ServiceList from "../components/dashboard/ServiceList"
 import AlertList from "../components/dashboard/AlertList"
 import TrendChart from "../components/dashboard/TrendChart"
+import UsageForm from "../components/dashboard/UsageForm"
+import SimulatorToggle from "../components/dashboard/SimulatorToggle"
 
 export default function Dashboard() {
   const [summary, setSummary] = useState<Summary | null>(null)
@@ -27,10 +29,8 @@ export default function Dashboard() {
       setTrend(t)
     }
 
-    // Initial load
     fetchData()
 
-    // Auto refresh every 5 seconds
     const interval = setInterval(fetchData, 5000)
 
     return () => clearInterval(interval)
@@ -52,6 +52,10 @@ export default function Dashboard() {
             value={summary.daily_total}
             variant="success"
           />
+          <div className="mb-10">
+            <UsageForm />
+          </div>
+          <SimulatorToggle />
         </div>
       )}
 
