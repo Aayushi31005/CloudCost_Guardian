@@ -6,16 +6,14 @@ router = APIRouter(prefix="/simulator", tags=["simulator"])
 
 @router.post("/start")
 def start_simulator():
-    simulator.RUNNING = True
-    return {"status": "simulator started"}
+    return simulator.start_simulator()
 
 
 @router.post("/stop")
 def stop_simulator():
-    simulator.RUNNING = False
-    return {"status": "simulator stopped"}
+    return simulator.stop_simulator()
 
 
 @router.get("/status")
 def simulator_status():
-    return {"running": simulator.RUNNING}
+    return simulator.get_simulator_status()

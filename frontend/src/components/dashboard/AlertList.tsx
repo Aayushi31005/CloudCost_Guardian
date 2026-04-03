@@ -4,21 +4,40 @@ type Props = {
   alerts: Alert[]
 }
 
-function getAlertStyle(severity: string) {
+function getAlertContainerStyle(severity: string) {
   if (severity === "critical") {
-    return "bg-red-500/20 border-red-500/40 text-red-400"
+    return "border-red-500/30 bg-red-500/10"
   }
 
   if (severity === "warning") {
-    return "bg-yellow-500/20 border-yellow-500/40 text-yellow-400"
+    return "border-yellow-500/30 bg-yellow-500/10"
   }
 
-  return "bg-gray-700 text-gray-300"
+  return "border-gray-700 bg-gray-800/80"
+}
+
+function AlertBadge({ severity }: { severity: string }) {
+  const normalizedSeverity = severity.toLowerCase()
+
+  const badgeStyles =
+    normalizedSeverity === "critical"
+      ? "border-red-500/30 bg-red-500/15 text-red-300"
+      : normalizedSeverity === "warning"
+        ? "border-yellow-500/30 bg-yellow-500/15 text-yellow-300"
+        : "border-gray-600 bg-gray-700/80 text-gray-300"
+
+  return (
+    <span
+      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium uppercase tracking-[0.2em] ${badgeStyles}`}
+    >
+      {severity}
+    </span>
+  )
 }
 
 export default function AlertList({ alerts }: Props) {
   return (
-    <div className="bg-gray-900 border border-gray-800 p-6 rounded-2xl">
+    <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6 transition hover:border-gray-700">
       <h2 className="text-lg font-semibold mb-4">
         Alerts
       </h2>
@@ -31,9 +50,14 @@ export default function AlertList({ alerts }: Props) {
         {alerts.map((a, i) => (
           <div
             key={i}
-            className={`px-4 py-3 rounded-lg mb-3 border ${getAlertStyle(a.severity)}`}
+            className={`mb-3 rounded-xl border px-4 py-4 ${getAlertContainerStyle(a.severity)}`}
           >
-            {a.message}
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-sm leading-6 text-gray-100">
+                {a.message}
+              </p>
+              <AlertBadge severity={a.severity} />
+            </div>
           </div>
         ))}
       </div>

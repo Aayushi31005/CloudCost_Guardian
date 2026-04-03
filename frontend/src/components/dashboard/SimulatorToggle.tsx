@@ -23,7 +23,7 @@ export default function SimulatorToggle() {
   }
 
   return (
-    <div className="bg-gray-900 border border-gray-800 p-4 rounded-2xl flex items-center justify-between">
+    <div className="flex items-center justify-between rounded-xl border border-gray-800 bg-gray-900 p-5 transition hover:border-gray-700">
       <div>
         <p className="text-sm text-gray-400">Simulator Mode</p>
         <p className="text-white font-medium">
@@ -33,7 +33,7 @@ export default function SimulatorToggle() {
 
       <button
         onClick={toggle}
-        className={`px-4 py-2 rounded transition ${
+        className={`rounded-md px-4 py-2 text-sm font-medium transition ${
           running
             ? "bg-red-600 hover:bg-red-500"
             : "bg-green-600 hover:bg-green-500"

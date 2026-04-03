@@ -1,5 +1,3 @@
-import threading
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.logging import setup_logging
@@ -10,7 +8,8 @@ from app.api.dashboard import router as dashboard_router
 from app.api.alerts import router as alerts_router
 from app.api.routes import simulator
 from app.api.routes.analytics import router as analytics_router
-from app.services.simulator import simulator_loop
+from app.services.simulator import ensure_simulator_thread
+from app.api.budget_routes import router as budget_router
 
 setup_logging()
 
@@ -31,8 +30,7 @@ init_db()
 
 @app.on_event("startup")
 def start_simulator():
-    thread = threading.Thread(target=simulator_loop, daemon=True)
-    thread.start()
+    ensure_simulator_thread()
 
 app.include_router(health_router)
 app.include_router(usage_router)
@@ -40,3 +38,4 @@ app.include_router(dashboard_router)
 app.include_router(alerts_router)
 app.include_router(simulator.router)
 app.include_router(analytics_router)
+app.include_router(budget_router)

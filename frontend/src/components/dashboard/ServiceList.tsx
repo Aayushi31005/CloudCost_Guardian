@@ -6,7 +6,7 @@ type Props = {
 
 export default function ServiceList({ services }: Props) {
   return (
-    <div className="bg-gray-900 border border-gray-800 p-6 rounded-2xl">
+    <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6 transition hover:border-gray-700">
       <h2 className="text-lg font-semibold mb-4">
         Service Breakdown
       </h2>
