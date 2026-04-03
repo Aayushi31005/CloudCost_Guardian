@@ -1,3 +1,5 @@
+import type { BudgetConfig, CostHistoryPoint } from "../types"
+
 const API_BASE = "http://127.0.0.1:8010"
 const USER_TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -16,12 +18,43 @@ export async function getAlerts() {
   return res.json()
 }
 
-export async function getDailyCosts() {
-  const res = await fetch(`${API_BASE}/analytics/daily-costs`, {
+export async function getCostHistory(granularity: "daily" | "weekly" | "monthly"): Promise<CostHistoryPoint[]> {
+  const res = await fetch(`${API_BASE}/analytics/cost-history?granularity=${granularity}`, {
     headers: {
       "X-Timezone": USER_TIMEZONE,
     },
   })
+
+  if (!res.ok) {
+    throw new Error("Failed to load cost history")
+  }
+
+  return res.json()
+}
+
+export async function getBudget(): Promise<BudgetConfig> {
+  const res = await fetch(`${API_BASE}/budget`)
+
+  if (!res.ok) {
+    throw new Error("Failed to load budget")
+  }
+
+  return res.json()
+}
+
+export async function saveBudget(config: BudgetConfig): Promise<BudgetConfig> {
+  const res = await fetch(`${API_BASE}/budget`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(config),
+  })
+
+  if (!res.ok) {
+    throw new Error("Failed to save budget")
+  }
+
   return res.json()
 }
 

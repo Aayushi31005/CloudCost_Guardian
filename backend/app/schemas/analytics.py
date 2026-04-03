@@ -1,8 +1,7 @@
-from datetime import date
-
 from pydantic import BaseModel
 
 
-class DailyCost(BaseModel):
-    date: date
+class CostHistoryPoint(BaseModel):
+    period_start: str
+    period_label: str
     cost: float

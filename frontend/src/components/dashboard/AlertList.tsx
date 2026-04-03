@@ -6,11 +6,11 @@ type Props = {
 
 function getAlertContainerStyle(severity: string) {
   if (severity === "critical") {
-    return "border-red-500/30 bg-red-500/10"
+    return "alert-glow border-red-500/30 bg-red-500/10"
   }
 
   if (severity === "warning") {
-    return "border-yellow-500/30 bg-yellow-500/10"
+    return "alert-glow border-yellow-500/30 bg-yellow-500/10"
   }
 
   return "border-gray-700 bg-gray-800/80"
@@ -47,9 +47,9 @@ export default function AlertList({ alerts }: Props) {
           <p className="text-gray-500 mt-4">No active alerts</p>
         )}
 
-        {alerts.map((a, i) => (
+        {alerts.map((a) => (
           <div
-            key={i}
+            key={`${a.severity}-${a.message}`}
             className={`mb-3 rounded-xl border px-4 py-4 ${getAlertContainerStyle(a.severity)}`}
           >
             <div className="flex items-start justify-between gap-3">

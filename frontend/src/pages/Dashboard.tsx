@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { getSummary, getServices, getAlerts, getDailyCosts } from "../services/api"
-import type { Summary, ServiceCost, Alert, DailyCost } from "../types"
+import { getSummary, getServices, getAlerts, getCostHistory } from "../services/api"
+import type { Summary, ServiceCost, Alert, CostHistoryPoint } from "../types"
 import ServiceChart from "../components/dashboard/ServiceChart"
 import BudgetPanel from "../components/BudgetPanel"
 import PageHeader from "../components/layout/PageHeader"
@@ -14,14 +14,15 @@ export default function Dashboard() {
   const [summary, setSummary] = useState<Summary | null>(null)
   const [services, setServices] = useState<ServiceCost[]>([])
   const [alerts, setAlerts] = useState<Alert[]>([])
-  const [trend, setTrend] = useState<DailyCost[]>([])
+  const [trend, setTrend] = useState<CostHistoryPoint[]>([])
+  const [granularity, setGranularity] = useState<"daily" | "weekly" | "monthly">("daily")
 
   useEffect(() => {
     async function fetchData() {
       const s = await getSummary()
       const svc = await getServices()
       const al = await getAlerts()
-      const t = await getDailyCosts()
+      const t = await getCostHistory(granularity)
 
       setSummary(s)
       setServices(svc)
@@ -34,7 +35,7 @@ export default function Dashboard() {
     const interval = setInterval(fetchData, 3000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [granularity])
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -45,10 +46,15 @@ export default function Dashboard() {
           <PageHeader />
 
           {summary && (
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
               <SummaryCard
                 title="Monthly Spend"
                 value={summary.monthly_total}
+                variant="primary"
+              />
+              <SummaryCard
+                title="Weekly Spend"
+                value={summary.weekly_total}
                 variant="primary"
               />
               <SummaryCard
@@ -60,7 +66,13 @@ export default function Dashboard() {
             </div>
           )}
 
-          {trend.length > 0 && <TrendChart data={trend} />}
+          {trend.length > 0 && (
+            <TrendChart
+              data={trend}
+              granularity={granularity}
+              onGranularityChange={setGranularity}
+            />
+          )}
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <BudgetPanel />

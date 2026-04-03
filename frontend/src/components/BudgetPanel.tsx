@@ -1,23 +1,40 @@
 import { useState, useEffect } from "react"
-import axios from "axios"
+import { getBudget, saveBudget } from "../services/api"
 
 export default function BudgetPanel() {
-
   const [daily, setDaily] = useState(0)
   const [monthly, setMonthly] = useState(0)
+  const [error, setError] = useState("")
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    axios.get("/budget").then(res => {
-      setDaily(res.data.daily_limit)
-      setMonthly(res.data.monthly_limit)
-    })
+    async function loadBudget() {
+      try {
+        const data = await getBudget()
+        setDaily(data.daily_limit)
+        setMonthly(data.monthly_limit)
+        setError("")
+      } catch {
+        setError("Unable to load budget settings right now.")
+      }
+    }
+
+    loadBudget()
   }, [])
 
-  const saveBudget = async () => {
-    await axios.post("/budget", {
-      daily_limit: daily,
-      monthly_limit: monthly
-    })
+  const handleSaveBudget = async () => {
+    try {
+      setSaving(true)
+      await saveBudget({
+        daily_limit: daily,
+        monthly_limit: monthly,
+      })
+      setError("")
+    } catch {
+      setError("Unable to save budget settings right now.")
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -26,6 +43,12 @@ export default function BudgetPanel() {
       <h2 className="text-sm text-gray-400 uppercase tracking-wide mb-4">
         Budget Configuration
       </h2>
+
+      {error && (
+        <p className="mb-4 text-sm text-red-400">
+          {error}
+        </p>
+      )}
 
       <div className="space-y-3">
 
@@ -52,10 +75,10 @@ export default function BudgetPanel() {
         </div>
 
         <button
-          onClick={saveBudget}
+          onClick={handleSaveBudget}
           className="w-full mt-3 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-md"
         >
-          Save Budget
+          {saving ? "Saving..." : "Save Budget"}
         </button>
 
       </div>

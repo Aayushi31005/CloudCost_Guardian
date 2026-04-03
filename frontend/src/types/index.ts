@@ -1,5 +1,6 @@
 export interface Summary {
   monthly_total: number
+  weekly_total: number
   daily_total: number
 }
 
@@ -13,7 +14,13 @@ export interface Alert {
   message: string
 }
 
-export interface DailyCost {
-  date: string
+export interface CostHistoryPoint {
+  period_start: string
+  period_label: string
   cost: number
+}
+
+export interface BudgetConfig {
+  daily_limit: number
+  monthly_limit: number
 }
