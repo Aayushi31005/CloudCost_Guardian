@@ -20,12 +20,17 @@ policy_engine = PolicyEngine("app/config/policies.yaml")
 
 
 def create_usage(_: Session | None, usage: UsageCreate) -> bool:
+    cumulative_usage_before = usage_repo.get_cumulative_usage_before(
+        usage.service,
+        usage.timestamp,
+    )
+
     created = usage_repo.create(usage)
 
     if not created:
         return False
 
-    estimate = cost_engine.estimate(usage)
+    estimate = cost_engine.estimate(usage, cumulative_usage_before)
     cost_repo.save(estimate)
     aggregations = aggregation_engine.aggregate(estimate, usage.timestamp)
 

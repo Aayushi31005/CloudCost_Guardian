@@ -32,8 +32,8 @@ export async function getCostHistory(granularity: "daily" | "weekly" | "monthly"
   return res.json()
 }
 
-export async function getBudget(): Promise<BudgetConfig> {
-  const res = await fetch(`${API_BASE}/budget`)
+export async function getBudget(service: "ec2" | "s3"): Promise<BudgetConfig> {
+  const res = await fetch(`${API_BASE}/budget?service=${service}`)
 
   if (!res.ok) {
     throw new Error("Failed to load budget")
@@ -58,8 +58,8 @@ export async function saveBudget(config: BudgetConfig): Promise<BudgetConfig> {
   return res.json()
 }
 
-export async function startSimulator() {
-  await fetch(`${API_BASE}/simulator/start`, { method: "POST" })
+export async function startSimulator(service: "ec2" | "s3") {
+  await fetch(`${API_BASE}/simulator/start?service=${service}`, { method: "POST" })
 }
 
 export async function stopSimulator() {

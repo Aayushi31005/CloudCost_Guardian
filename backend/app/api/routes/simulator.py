@@ -5,8 +5,8 @@ router = APIRouter(prefix="/simulator", tags=["simulator"])
 
 
 @router.post("/start")
-def start_simulator():
-    return simulator.start_simulator()
+def start_simulator(service: str | None = None):
+    return simulator.start_simulator(service)
 
 
 @router.post("/stop")

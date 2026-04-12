@@ -1,18 +1,23 @@
 import { useState, useEffect } from "react"
 import { getBudget, saveBudget } from "../services/api"
 
-export default function BudgetPanel() {
-  const [daily, setDaily] = useState(0)
-  const [monthly, setMonthly] = useState(0)
+type Props = {
+  service: "ec2" | "s3"
+  onServiceChange: (service: "ec2" | "s3") => void
+}
+
+export default function BudgetPanel({ service, onServiceChange }: Props) {
+  const [daily, setDaily] = useState("")
+  const [monthly, setMonthly] = useState("")
   const [error, setError] = useState("")
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     async function loadBudget() {
       try {
-        const data = await getBudget()
-        setDaily(data.daily_limit)
-        setMonthly(data.monthly_limit)
+        const data = await getBudget(service)
+        setDaily(String(data.daily_limit))
+        setMonthly(String(data.monthly_limit))
         setError("")
       } catch {
         setError("Unable to load budget settings right now.")
@@ -20,14 +25,15 @@ export default function BudgetPanel() {
     }
 
     loadBudget()
-  }, [])
+  }, [service])
 
   const handleSaveBudget = async () => {
     try {
       setSaving(true)
       await saveBudget({
-        daily_limit: daily,
-        monthly_limit: monthly,
+        service,
+        daily_limit: Number(daily) || 0,
+        monthly_limit: Number(monthly) || 0,
       })
       setError("")
     } catch {
@@ -51,6 +57,18 @@ export default function BudgetPanel() {
       )}
 
       <div className="space-y-3">
+        <div>
+          <label className="text-xs text-gray-400">Service</label>
+
+          <select
+            value={service}
+            onChange={(e) => onServiceChange(e.target.value as "ec2" | "s3")}
+            className="w-full mt-1 bg-gray-800 border border-gray-700 rounded-md p-2 text-white"
+          >
+            <option value="ec2">EC2</option>
+            <option value="s3">S3</option>
+          </select>
+        </div>
 
         <div>
           <label className="text-xs text-gray-400">Daily Budget</label>
@@ -58,7 +76,7 @@ export default function BudgetPanel() {
           <input
             type="number"
             value={daily}
-            onChange={(e) => setDaily(Number(e.target.value))}
+            onChange={(e) => setDaily(e.target.value)}
             className="w-full mt-1 bg-gray-800 border border-gray-700 rounded-md p-2 text-white"
           />
         </div>
@@ -69,7 +87,7 @@ export default function BudgetPanel() {
           <input
             type="number"
             value={monthly}
-            onChange={(e) => setMonthly(Number(e.target.value))}
+            onChange={(e) => setMonthly(e.target.value)}
             className="w-full mt-1 bg-gray-800 border border-gray-700 rounded-md p-2 text-white"
           />
         </div>

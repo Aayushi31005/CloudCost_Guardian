@@ -4,11 +4,7 @@ class AlertRepository:
         self.alert_engine = alert_engine
 
     def get_active_alerts(self):
-
         return [
-            {
-                "severity": "unknown",
-                "message": key
-            }
-            for key in self.alert_engine.sent_alerts
+            alert.model_dump()
+            for alert in self.alert_engine.active_alerts.values()
         ]

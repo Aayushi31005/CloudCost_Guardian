@@ -5,11 +5,23 @@ import {
   stopSimulator,
 } from "../../services/api"
 
-export default function SimulatorToggle() {
+type Props = {
+  service: "ec2" | "s3"
+}
+
+export default function SimulatorToggle({ service }: Props) {
   const [running, setRunning] = useState(false)
 
   useEffect(() => {
-    getSimulatorStatus().then((res) => setRunning(res.running))
+    getSimulatorStatus().then((res) => {
+      setRunning(res.running)
+    })
+
+    const interval = setInterval(() => {
+      getSimulatorStatus().then((res) => setRunning(res.running))
+    }, 3000)
+
+    return () => clearInterval(interval)
   }, [])
 
   const toggle = async () => {
@@ -17,7 +29,7 @@ export default function SimulatorToggle() {
       await stopSimulator()
       setRunning(false)
     } else {
-      await startSimulator()
+      await startSimulator(service)
       setRunning(true)
     }
   }

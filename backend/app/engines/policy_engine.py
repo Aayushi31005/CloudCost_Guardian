@@ -9,13 +9,17 @@ logger = logging.getLogger(__name__)
 
 class PolicyEngine:
     def __init__(self, policy_path: str):
-        with open(policy_path) as f:
-            self.policies = yaml.safe_load(f)
+        self.policy_path = policy_path
+
+    def _load_policies(self):
+        with open(self.policy_path, encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
         
     def evaluate(self, aggregation: AggregatedCost, latest_increment: float) -> List[PolicyViolation]:
         violations = []
+        policies = self._load_policies()
 
-        for name, policy in self.policies.items():
+        for name, policy in policies.items():
             if policy["window"] != aggregation.window:
                 continue
 

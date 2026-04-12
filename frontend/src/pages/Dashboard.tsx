@@ -11,6 +11,7 @@ import TrendChart from "../components/dashboard/TrendChart"
 import SimulatorToggle from "../components/dashboard/SimulatorToggle"
 
 export default function Dashboard() {
+  const [selectedService, setSelectedService] = useState<"ec2" | "s3">("ec2")
   const [summary, setSummary] = useState<Summary | null>(null)
   const [services, setServices] = useState<ServiceCost[]>([])
   const [alerts, setAlerts] = useState<Alert[]>([])
@@ -46,7 +47,7 @@ export default function Dashboard() {
           <PageHeader />
 
           {summary && (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
               <SummaryCard
                 title="Monthly Spend"
                 value={summary.monthly_total}
@@ -62,7 +63,17 @@ export default function Dashboard() {
                 value={summary.daily_total}
                 variant="success"
               />
-              <SimulatorToggle />
+              <SummaryCard
+                title="EC2 Spend"
+                value={summary.ec2_total}
+                variant="primary"
+              />
+              <SummaryCard
+                title="S3 Spend"
+                value={summary.s3_total}
+                variant="success"
+              />
+              <SimulatorToggle service={selectedService} />
             </div>
           )}
 
@@ -75,7 +86,10 @@ export default function Dashboard() {
           )}
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <BudgetPanel />
+            <BudgetPanel
+              service={selectedService}
+              onServiceChange={setSelectedService}
+            />
             <AlertList alerts={alerts} />
           </div>
 

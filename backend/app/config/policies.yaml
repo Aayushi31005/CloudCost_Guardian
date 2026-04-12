@@ -1,20 +1,30 @@
 daily_ec2_limit:
   window: daily_service
   service: ec2
-  max_cost: 50
+  max_cost: 50.0
   warning_ratio: 0.75
   severity: warning
-
+daily_s3_limit:
+  window: daily_service
+  service: s3
+  max_cost: 110.0
+  warning_ratio: 0.75
+  severity: warning
 monthly_ec2_limit:
   window: monthly_service
   service: ec2
-  max_cost: 200
+  max_cost: 60.0
   warning_ratio: 0.75
   severity: warning
-
+monthly_s3_limit:
+  window: monthly_service
+  service: s3
+  max_cost: 120.0
+  warning_ratio: 0.75
+  severity: warning
 monthly_global_limit:
   window: monthly_global
   service: null
-  max_cost: 500
+  max_cost: 500.0
   warning_ratio: 0.75
   severity: critical

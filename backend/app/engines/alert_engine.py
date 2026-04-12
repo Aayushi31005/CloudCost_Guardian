@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 class AlertEngine:
     def __init__(self):
         self.sent_alerts = set()
+        self.active_alerts: dict[str, Alert] = {}
 
     def emit(self, violation: PolicyViolation) -> Optional[Alert]:
         key = (
@@ -47,6 +48,7 @@ class AlertEngine:
         )
 
         self.sent_alerts.add(key)
+        self.active_alerts[key] = alert
 
         logger.error(
             "alert_emitted",

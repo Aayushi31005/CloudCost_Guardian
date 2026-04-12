@@ -13,10 +13,19 @@ class DashboardRepository:
 
         db = SessionLocal()
 
-        monthly_total = db.query(func.sum(AggregatedCostDB.total_cost)) \
-            .filter(AggregatedCostDB.window == "monthly_global") \
-            .filter(AggregatedCostDB.period_start == month_period) \
-            .scalar() or 0.0
+        monthly_service_rows = db.query(
+            AggregatedCostDB.service,
+            AggregatedCostDB.total_cost,
+        ).filter(
+            AggregatedCostDB.window == "monthly_service",
+            AggregatedCostDB.period_start == month_period,
+        ).all()
+
+        monthly_total = sum(float(row[1]) for row in monthly_service_rows)
+        service_totals = {
+            (row[0] or "").lower(): float(row[1])
+            for row in monthly_service_rows
+        }
 
         daily_total = db.query(func.sum(AggregatedCostDB.total_cost)) \
             .filter(AggregatedCostDB.window == "daily_service") \
@@ -30,7 +39,9 @@ class DashboardRepository:
         return {
             "monthly_total": round(monthly_total, 4),
             "weekly_total": round(weekly_total, 4),
-            "daily_total": round(daily_total, 4)
+            "daily_total": round(daily_total, 4),
+            "ec2_total": round(service_totals.get("ec2", 0.0), 4),
+            "s3_total": round(service_totals.get("s3", 0.0), 4),
         }
 
     def get_service_breakdown(self):
