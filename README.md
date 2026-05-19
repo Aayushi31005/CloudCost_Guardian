@@ -1,10 +1,18 @@
 # CloudCost Guardian
 
+![Python](https://img.shields.io/badge/backend-Python-blue)
+![FastAPI](https://img.shields.io/badge/API-FastAPI-green)
+![React](https://img.shields.io/badge/frontend-React-blue)
+![TypeScript](https://img.shields.io/badge/language-TypeScript-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 A preventive cloud cost monitoring prototype that detects potential overspend **before cloud budgets are exceeded**.
 
 CloudCost Guardian models cloud cost governance as a **deterministic backend pipeline** that converts usage telemetry into early, explainable alerts.
 
 Instead of reacting to billing dashboards after spending occurs, the system continuously evaluates usage against budget policies and warns engineers **before unexpected cloud bills appear**.
+
+**CloudCost Guardian** is a deterministic backend pipeline that ingests cloud usage events, estimates costs using configuration-driven pricing rules, aggregates spend across policy windows, evaluates budget policies, and emits preventive alerts before potential cloud overspend occurs.
 
 ---
 
@@ -97,6 +105,8 @@ Features include:
 - Preventive alert display
 - Real-time notification alerts
 
+  The frontend acts primarily as a monitoring and visualization layer, while the core system behavior and business logic remain backend-driven.
+
 ---
 
 ## Technology Stack
@@ -132,6 +142,7 @@ The simulator:
 - drives the entire monitoring pipeline
 
 This allows the system to behave similarly to real telemetry ingestion.
+The simulator was intentionally designed to mimic real telemetry ingestion while avoiding dependency on external cloud APIs during the prototype phase.
 
 ---
 
@@ -155,12 +166,39 @@ npm run dev
 
 ---
 
-Suggested screenshots:
+## Screenshots
 
-- main dashboard
-- cost trend analytics
-- alert notification popup
-- simulator running
+### Dashboard Overview
+![Dashboard](screenshots/dashboard.png)
+
+### Cost Trend Analytics
+![Trend](screenshots/trend.png)
+
+### Budget Configuration
+![Budget](screenshots/budget.png)
+
+### Alert System
+![Alerts](screenshots/alerts.png)
+
+### Real-Time Alert Notification
+![Notification](screenshots/notification.png)
+
+---
+
+## Reliability and System Refinements
+
+Several reliability and correctness improvements were implemented during development, including:
+
+- dashboard crash prevention using React error boundaries
+- service-specific budget persistence
+- cumulative EC2 free-tier billing correction
+- dynamic policy reload behavior
+- weekly analytics support
+- simulator thread stability improvements
+- real-time toast notifications for alerts
+- corrected daily / weekly / monthly aggregation logic
+
+These refinements improved both system correctness and monitoring realism.
 
 ---
 
@@ -178,6 +216,8 @@ Out of scope:
 - distributed ingestion pipelines
 
 ---
+
+
 
 ## Future Improvements
 
