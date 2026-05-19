@@ -171,12 +171,15 @@ npm run dev
 <img width="1600" height="852" alt="dashboard" src="https://github.com/user-attachments/assets/8503397d-b3f9-484c-b015-c084abdbb574" />
 
 
+
 ### Cost Trend Analytics
 <img width="1600" height="850" alt="img 3" src="https://github.com/user-attachments/assets/3f4be5cc-08a6-4f5e-b5fe-554470665a9d" />
 
 
+
 ### Budget Configuration
 <img width="1600" height="850" alt="img 3" src="https://github.com/user-attachments/assets/7397eb88-2ee6-426a-b4b2-9722657ef8d7" />
+
 
 
 ### Service Distriution Section
@@ -184,8 +187,10 @@ npm run dev
 <img width="1600" height="849" alt="img 5" src="https://github.com/user-attachments/assets/27d6a40f-7db7-47ad-9c08-d18d12be2c59" />
 
 
+
 ### Alert System
 <img width="1600" height="842" alt="img 7" src="https://github.com/user-attachments/assets/5081744e-6e05-4855-b41e-964b5668551f" />
+
 
 
 ### Popup notification section
