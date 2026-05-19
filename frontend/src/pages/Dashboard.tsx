@@ -47,30 +47,50 @@ export default function Dashboard() {
           <PageHeader />
 
           {summary && (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-5">
               <SummaryCard
-                title="Monthly Spend"
-                value={summary.monthly_total}
-                variant="primary"
-              />
-              <SummaryCard
-                title="Weekly Spend"
-                value={summary.weekly_total}
-                variant="primary"
-              />
-              <SummaryCard
-                title="Daily Spend"
+                title="Daily Total"
                 value={summary.daily_total}
                 variant="success"
               />
               <SummaryCard
-                title="EC2 Spend"
-                value={summary.ec2_total}
+                title="Daily EC2"
+                value={summary.daily_ec2_total}
                 variant="primary"
               />
               <SummaryCard
-                title="S3 Spend"
-                value={summary.s3_total}
+                title="Daily S3"
+                value={summary.daily_s3_total}
+                variant="success"
+              />
+              <SummaryCard
+                title="Weekly Total"
+                value={summary.weekly_total}
+                variant="primary"
+              />
+              <SummaryCard
+                title="Weekly EC2"
+                value={summary.weekly_ec2_total}
+                variant="primary"
+              />
+              <SummaryCard
+                title="Weekly S3"
+                value={summary.weekly_s3_total}
+                variant="success"
+              />
+              <SummaryCard
+                title="Monthly Total"
+                value={summary.monthly_total}
+                variant="primary"
+              />
+              <SummaryCard
+                title="Monthly EC2"
+                value={summary.monthly_ec2_total}
+                variant="primary"
+              />
+              <SummaryCard
+                title="Monthly S3"
+                value={summary.monthly_s3_total}
                 variant="success"
               />
               <SimulatorToggle service={selectedService} />

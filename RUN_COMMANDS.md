@@ -4,7 +4,7 @@
 
 ```powershell
 cd backend
-python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8010
+python -m uvicorn app.main:app --reload  --port 8010
 ```
 
 Or:

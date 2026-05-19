@@ -1,9 +1,13 @@
 export interface Summary {
-  monthly_total: number
-  weekly_total: number
   daily_total: number
-  ec2_total: number
-  s3_total: number
+  daily_ec2_total: number
+  daily_s3_total: number
+  weekly_total: number
+  weekly_ec2_total: number
+  weekly_s3_total: number
+  monthly_total: number
+  monthly_ec2_total: number
+  monthly_s3_total: number
 }
 
 export interface ServiceCost {

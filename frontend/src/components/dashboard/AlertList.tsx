@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react"
+import toast from "react-hot-toast"
 import type { Alert } from "../../types"
 
 type Props = {
@@ -14,6 +16,18 @@ function getAlertContainerStyle(severity: string) {
   }
 
   return "border-gray-700 bg-gray-800/80"
+}
+
+function getToastStyle(severity: string) {
+  if (severity === "critical") {
+    return "border-red-500 bg-red-500/10"
+  }
+
+  if (severity === "warning") {
+    return "border-yellow-500 bg-yellow-500/10"
+  }
+
+  return "border-gray-700 bg-gray-900"
 }
 
 function AlertBadge({ severity }: { severity: string }) {
@@ -36,6 +50,23 @@ function AlertBadge({ severity }: { severity: string }) {
 }
 
 export default function AlertList({ alerts }: Props) {
+  const prevAlertCount = useRef(0)
+
+  useEffect(() => {
+    if (alerts.length > prevAlertCount.current) {
+      const newest = alerts[0]
+
+      toast.custom(() => (
+        <div className={`rounded-lg border p-4 text-white shadow-lg ${getToastStyle(newest.severity)}`}>
+          <div className="font-semibold">Cloud Cost Alert</div>
+          <div className="mt-1 text-sm">{newest.message}</div>
+        </div>
+      ))
+    }
+
+    prevAlertCount.current = alerts.length
+  }, [alerts])
+
   return (
     <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6 transition hover:border-gray-700">
       <h2 className="text-lg font-semibold mb-4">
