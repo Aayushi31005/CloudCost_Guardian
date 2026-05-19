@@ -169,7 +169,7 @@ npm run dev
 ## Screenshots
 
 ### Dashboard Overview
-![Dashboard](C:\Users\Lenovo\OneDrive\Desktop\dashboard.jpeg)
+<img width="1600" height="852" alt="dashboard" src="https://github.com/user-attachments/assets/8503397d-b3f9-484c-b015-c084abdbb574" />
 
 ### Cost Trend Analytics
 ![Trend](screenshots/trend.png)
