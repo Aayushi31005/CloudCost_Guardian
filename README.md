@@ -3,7 +3,6 @@
 ![Python](https://img.shields.io/badge/backend-Python-blue)
 ![FastAPI](https://img.shields.io/badge/API-FastAPI-green)
 ![React](https://img.shields.io/badge/frontend-React-blue)
-![TypeScript](https://img.shields.io/badge/language-TypeScript-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 A preventive cloud cost monitoring prototype that detects potential overspend **before cloud budgets are exceeded**.
