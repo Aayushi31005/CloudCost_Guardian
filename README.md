@@ -178,7 +178,8 @@ npm run dev
 
 
 ### Budget Configuration
-<img width="1600" height="850" alt="img 3" src="https://github.com/user-attachments/assets/7397eb88-2ee6-426a-b4b2-9722657ef8d7" />
+<img width="1600" height="847" alt="Budget-panel" src="https://github.com/user-attachments/assets/769b90cd-9a77-4c3a-8bee-9c00bdc423ff" />
+
 
 
 
