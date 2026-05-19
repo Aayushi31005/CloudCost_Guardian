@@ -169,7 +169,7 @@ npm run dev
 ## Screenshots
 
 ### Dashboard Overview
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](C:\Users\Lenovo\OneDrive\Desktop\dashboard.jpeg)
 
 ### Cost Trend Analytics
 ![Trend](screenshots/trend.png)
